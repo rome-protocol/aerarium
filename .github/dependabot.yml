@@ -1,0 +1,72 @@
+# Next.js demo UI (Compound-on-Rome wedge; multi-arch Docker image)
+
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: friday
+    open-pull-requests-limit: 8
+    labels:
+      - dependencies
+      - node
+    groups:
+      npm-patch-and-minor:
+        update-types:
+          - patch
+          - minor
+        exclude-patterns:
+          - "next"
+          - "react"
+          - "react-dom"
+      framework:
+        patterns:
+          - "next"
+          - "react"
+          - "react-dom"
+        update-types:
+          - patch
+          - minor
+    ignore:
+      - dependency-name: "picomatch"
+      - dependency-name: "typescript"
+        update-types:
+          - version-update:semver-major
+      - dependency-name: "wagmi"
+        update-types:
+          - version-update:semver-major
+      - dependency-name: "next"
+        update-types:
+          - version-update:semver-major
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: friday
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - ci
+    groups:
+      gh-actions:
+        update-types:
+          - patch
+          - minor
+          - major
+
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: weekly
+      day: friday
+    open-pull-requests-limit: 3
+    labels:
+      - dependencies
+      - docker
+    ignore:
+      - dependency-name: "node"
+        update-types:
+          - version-update:semver-major

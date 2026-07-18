@@ -1,0 +1,81 @@
+/* ============================================================
+   AERARIUM — connected app (light, editorial)
+   The landing is the dark hero; the working app is light.
+   Override the Aerarium tokens for a cream base, then tint
+   per lane: .lane-evm (steel-blue) / .lane-sol (violet).
+   Loaded AFTER aerarium.css.
+   ============================================================ */
+
+body.aer-light {
+  /* ---- light neutrals (Rome cream / paper / ink) ---- */
+  --void:        #F0EBE2;
+  --obsidian:    #FBF8F4;   /* page bg — Rome cream */
+  --basalt:      #FFFFFF;   /* raised surface */
+  --basalt-2:    #FFFFFF;   /* card surface */
+  --paper:       #F4F0EA;   /* secondary fill */
+  --stone-line:  rgba(20,2,24,0.08);
+  --stone-line-2:rgba(20,2,24,0.15);
+
+  /* ---- ink text ---- */
+  --marble:      #1A1814;   /* primary text — Rome ink */
+  --marble-2:    #6E6657;   /* secondary */
+  --marble-3:    #968C7C;   /* tertiary / meta */
+  --marble-4:    #B8AE9C;   /* faint */
+
+  /* ---- Rome purple accent (deep, reads on cream) ---- */
+  --rome-purple: #5E0A60;
+  --rome-purple-hv: #4A0849;
+  --gold:        #5E0A60;   /* accent = Rome purple on light */
+  --gold-bright: #7A1A7C;
+  --gold-deep:   #4A0849;
+  --gold-wash:   rgba(94,10,96,0.06);
+
+  /* ---- dual-chain (deepened for contrast on cream) ---- */
+  --evm:         #3C648C;   --evm-bright: #5E8FBF; --evm-deep: #2A4A6C; --evm-wash: rgba(60,100,140,0.08);
+  --sol:         #6E45AE;   --sol-bright: #9A6BE0; --sol-deep: #52308A; --sol-wash: rgba(110,69,174,0.08);
+
+  --oxblood-br:  #A8303A;   --oxblood-wash: rgba(168,48,58,0.08);
+  --pos:         #3E8E5E;   --pos-wash: rgba(62,142,94,0.10);
+
+  background: var(--obsidian);
+  color: var(--marble);
+}
+
+/* ---- per-lane accent (set on the same body) ----
+   --lane drives the lane indicator, active rows, focus rings. */
+body.lane-evm { --lane: var(--evm); --lane-bright: var(--evm-bright); --lane-deep: var(--evm-deep); --lane-wash: var(--evm-wash); }
+body.lane-sol { --lane: var(--sol); --lane-bright: var(--sol-bright); --lane-deep: var(--sol-deep); --lane-wash: var(--sol-wash); }
+
+/* ---- light editorial backdrop ---- */
+body.aer-light .aer-light-bg {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(110% 60% at 50% -8%, var(--lane-wash) 0%, transparent 46%),
+    radial-gradient(80% 50% at 100% 0%, rgba(94,10,96,0.04) 0%, transparent 50%),
+    var(--obsidian);
+}
+
+/* selection on light */
+body.aer-light ::selection { background: var(--rome-purple); color: #FBF8F4; }
+
+/* app shell */
+.aer-app { position: relative; z-index: 1; max-width: 1120px; margin: 0 auto; padding: 0 28px 96px; }
+.aer-app-grid { display: grid; grid-template-columns: 1fr 380px; gap: 24px; align-items: start; }
+@media (max-width: 940px) { .aer-app-grid { grid-template-columns: 1fr; } }
+
+/* card */
+.aer-card {
+  background: var(--basalt); border: 1px solid var(--stone-line);
+  border-radius: var(--r-lg); box-shadow: 0 1px 2px rgba(20,2,24,0.04);
+}
+
+/* sticky right rail */
+.aer-rail { position: sticky; top: 88px; display: flex; flex-direction: column; gap: 20px; }
+@media (max-width: 940px) { .aer-rail { position: static; } }
+
+input.aer-input {
+  width: 100%; border: none; outline: none; background: transparent;
+  font-family: var(--font-display); font-size: 30px; color: var(--marble);
+  letter-spacing: -0.01em; min-width: 0;
+}
+input.aer-input::placeholder { color: var(--marble-4); }

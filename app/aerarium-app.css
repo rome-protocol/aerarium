@@ -1,0 +1,111 @@
+/* ============================================================
+   AERARIUM — connected app (light, editorial)
+   Ported from design/connected/aer-app.css (+ base tokens/fonts from
+   design/connected/aerarium.css). The landing is the dark hero; the working
+   lanes are LIGHT (Rome cream), tinted per lane.
+
+   EVERYTHING is scoped to the `.aer-connected` wrapper (rendered by LaneApp)
+   so it never leaks into the landing or the rest of the app. Only @font-face
+   and @keyframes are global — both are inherently global and idempotent.
+   The lane tint is selected by `.aer-connected.lane-evm` / `.lane-sol`.
+   ============================================================ */
+
+/* ---------- Rome system fonts (idempotent — registers by src URL) ---------- */
+@font-face { font-family: 'IBM Plex Mono'; src: url('/fonts/IBMPlexMono-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'IBM Plex Mono'; src: url('/fonts/IBMPlexMono-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'IBM Plex Mono'; src: url('/fonts/IBMPlexMono-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+@keyframes aer-spin { to { transform: rotate(360deg); } }
+
+/* ---------- light cream base + Aerarium tokens (scoped) ---------- */
+.aer-connected {
+  /* type families + radii + motion (Rome/Aerarium system) */
+  --font-display: 'Untitled Serif', 'Cinzel', Georgia, serif;
+  --font-sans:    'Untitled Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono:    'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --r-xs: 4px; --r-sm: 8px; --r-md: 12px; --r-lg: 20px; --r-pill: 999px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1); --dur: 240ms;
+
+  /* light neutrals (Rome cream / paper / ink) */
+  --void:        #F0EBE2;
+  --obsidian:    #FBF8F4;   /* page bg — Rome cream */
+  --basalt:      #FFFFFF;   /* raised surface */
+  --basalt-2:    #FFFFFF;   /* card surface */
+  --paper:       #F4F0EA;   /* secondary fill */
+  --stone-line:  rgba(20, 2, 24, 0.08);
+  --stone-line-2:rgba(20, 2, 24, 0.15);
+
+  /* ink text */
+  --marble:      #1A1814;
+  --marble-2:    #6E6657;
+  --marble-3:    #968C7C;
+  --marble-4:    #B8AE9C;
+
+  /* Rome purple accent (deep, reads on cream) */
+  --rome-purple: #5E0A60;
+  --rome-purple-hv: #4A0849;
+  --gold:        #5E0A60;
+  --gold-bright: #7A1A7C;
+  --gold-deep:   #4A0849;
+  --gold-wash:   rgba(94, 10, 96, 0.06);
+
+  /* dual-chain tints (deepened for contrast on cream) */
+  --evm: #3C648C; --evm-bright: #5E8FBF; --evm-deep: #2A4A6C; --evm-wash: rgba(60, 100, 140, 0.08);
+  --sol: #6E45AE; --sol-bright: #9A6BE0; --sol-deep: #52308A; --sol-wash: rgba(110, 69, 174, 0.08);
+
+  --oxblood-br:  #A8303A; --oxblood-wash: rgba(168, 48, 58, 0.08);
+  --pos:         #3E8E5E; --pos-wash: rgba(62, 142, 94, 0.10);
+
+  position: relative;
+  min-height: 100vh;
+  background: var(--obsidian);
+  color: var(--marble);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* per-lane accent — --lane drives the lane indicator, active rows, bars, rings */
+.aer-connected.lane-evm { --lane: var(--evm); --lane-bright: var(--evm-bright); --lane-deep: var(--evm-deep); --lane-wash: var(--evm-wash); }
+.aer-connected.lane-sol { --lane: var(--sol); --lane-bright: var(--sol-bright); --lane-deep: var(--sol-deep); --lane-wash: var(--sol-wash); }
+
+/* light editorial backdrop */
+.aer-connected .aer-light-bg {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(110% 60% at 50% -8%, var(--lane-wash) 0%, transparent 46%),
+    radial-gradient(80% 50% at 100% 0%, rgba(94, 10, 96, 0.04) 0%, transparent 50%),
+    var(--obsidian);
+}
+
+.aer-connected ::selection { background: var(--rome-purple); color: #FBF8F4; }
+
+/* display headings */
+.aer-connected .aer-display {
+  font-family: var(--font-display); font-weight: 400;
+  line-height: 1.04; letter-spacing: -0.015em; color: var(--marble);
+}
+
+/* app shell + two-column grid */
+.aer-connected .aer-app { position: relative; z-index: 1; max-width: 1120px; margin: 0 auto; padding: 0 28px 96px; }
+/* action surface LEFT (sticky rail), asset list RIGHT (flexible) */
+.aer-connected .aer-app-grid { display: grid; grid-template-columns: 440px 1fr; gap: 24px; align-items: start; }
+@media (max-width: 940px) { .aer-connected .aer-app-grid { grid-template-columns: 1fr; } }
+
+/* card */
+.aer-connected .aer-card {
+  background: var(--basalt); border: 1px solid var(--stone-line);
+  border-radius: var(--r-lg); box-shadow: 0 1px 2px rgba(20, 2, 24, 0.04);
+}
+
+/* sticky right rail */
+.aer-connected .aer-rail { position: sticky; top: 88px; display: flex; flex-direction: column; gap: 20px; }
+@media (max-width: 940px) { .aer-connected .aer-rail { position: static; } }
+
+/* amount input */
+.aer-connected input.aer-input {
+  width: 100%; border: none; outline: none; background: transparent;
+  font-family: var(--font-display); font-size: 30px; color: var(--marble);
+  letter-spacing: -0.01em; min-width: 0;
+}
+.aer-connected input.aer-input::placeholder { color: var(--marble-4); }

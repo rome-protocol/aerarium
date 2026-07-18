@@ -1,0 +1,162 @@
+/* ============================================================
+   AERARIUM — LANDING (scoped dark treatment)
+   The rest of the app is light-only (global data-theme="light" +
+   aerarium-tokens.css). This file scopes the designer's dark
+   landing tokens + rules under .aerarium-landing ONLY, so it does
+   NOT override the global light tokens used by other pages.
+
+   Source of truth for the look: design/aerarium.css. Ported here
+   with every :root / body.aerarium / bare-element rule re-rooted
+   under the .aerarium-landing wrapper. @font-face is global-safe
+   (face registration only) and reuses the app's /fonts assets;
+   Cinzel arrives via the CDN <link> in app/layout.tsx head.
+   ============================================================ */
+
+.aerarium-landing {
+  /* ---------- Rome neutrals (dark plum) ---------- */
+  --void:        #0A010C;   /* deepest */
+  --obsidian:    #140218;   /* page bg — Rome --rome-dark-purple */
+  --basalt:      #1C0820;   /* raised surface */
+  --basalt-2:    #25102B;   /* card surface */
+  --stone-line:  rgba(251,248,244,0.09);  /* hairline on dark */
+  --stone-line-2:rgba(251,248,244,0.18);  /* stronger hairline */
+
+  /* ---------- Rome cream / ink ---------- */
+  --marble:      #FBF8F4;   /* primary text — Rome cream */
+  --marble-2:    #C5B6C7;   /* secondary text (plum-tinted stone) */
+  --marble-3:    #8E7C90;   /* tertiary / meta */
+  --marble-4:    #5E4C60;   /* faint / disabled */
+
+  /* ---------- Rome purple (primary accent — replaces gold) ---------- */
+  --rome-purple: #5E0A60;   /* Rome brand purple — button fills */
+  --rome-purple-hv: #7A1A7C;/* Rome purple-tint — hover on dark */
+  --gold:        #C46AD0;   /* bright imperial purple — accents/numbers on dark */
+  --gold-bright: #DDA0E6;   /* highlight */
+  --gold-deep:   #5E0A60;   /* deep Rome purple */
+  --gold-wash:   rgba(196,106,208,0.12);
+
+  /* ---------- Oxblood / danger (kept for liquidation warnings) ---------- */
+  --oxblood:     #7E1E26;
+  --oxblood-br:  #C4566A;
+  --oxblood-wash:rgba(196,86,106,0.12);
+
+  /* ---------- Dual-chain accents (the two rival gates) ---------- */
+  --evm:         #5E8FBF;   /* steel-blue — the Ethereum gate */
+  --evm-bright:  #8FBCE4;
+  --evm-deep:    #3C648C;
+  --evm-wash:    rgba(94,143,191,0.13);
+
+  --sol:         #9A6BE0;   /* violet — the Solana gate */
+  --sol-bright:  #BB97F2;
+  --sol-deep:    #6E45AE;
+  --sol-wash:    rgba(154,107,224,0.13);
+
+  /* ---------- Semantic ---------- */
+  --pos:         #5BA678;   /* gains / healthy */
+  --neg:         var(--oxblood-br);
+
+  /* ---------- Type families (Rome system) ---------- */
+  --font-display: 'Untitled Serif', 'Cinzel', Georgia, serif;
+  --font-sans:    'Untitled Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono:    'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* ---------- Radii (mostly sharp — inscriptional/architectural) ---------- */
+  --r-xs: 4px;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 20px;
+  --r-pill: 999px;
+
+  /* ---------- Motion ---------- */
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --dur: 240ms;
+
+  /* ---------- Layout ---------- */
+  --maxw: 1200px;
+  --gutter: 32px;
+
+  /* the dark canvas + base type, scoped to the landing wrapper */
+  position: relative;
+  background: var(--obsidian);
+  color: var(--marble);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.aerarium-landing *,
+.aerarium-landing *::before,
+.aerarium-landing *::after { box-sizing: border-box; }
+
+/* ---------- Marble veining backdrop ---------- */
+.aerarium-landing .aer-marble-bg {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 18% -10%, rgba(94,143,191,0.12) 0%, transparent 42%),
+    radial-gradient(120% 80% at 86% 4%, rgba(154,107,224,0.13) 0%, transparent 44%),
+    radial-gradient(90% 70% at 50% 118%, rgba(94,10,96,0.22) 0%, transparent 62%),
+    var(--obsidian);
+}
+.aerarium-landing .aer-marble-veins {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  opacity: 0.5; mix-blend-mode: screen;
+}
+
+/* ---------- Display / headings ---------- */
+.aerarium-landing .aer-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  color: var(--marble);
+}
+.aerarium-landing .aer-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 500;
+}
+.aerarium-landing .aer-kicker {
+  font-family: var(--font-display);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.aerarium-landing .aer-mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.aerarium-landing .aer-num  { font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+
+/* Links + selection scoped to the landing so global light-mode links are untouched */
+.aerarium-landing a { color: var(--gold); text-decoration: none; }
+.aerarium-landing a:hover { color: var(--gold-bright); }
+.aerarium-landing ::selection { background: var(--gold); color: var(--obsidian); }
+
+/* "preview" badge — for sections fed by illustrative MarketSource data */
+.aerarium-landing .aer-preview-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--marble-3); font-weight: 500;
+  border: 1px solid var(--stone-line-2); border-radius: var(--r-pill);
+  padding: 3px 10px; vertical-align: middle;
+}
+.aerarium-landing .aer-preview-badge::before {
+  content: ''; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--gold); opacity: 0.7;
+}
+
+@keyframes aer-spin { to { transform: rotate(360deg); } }
+@keyframes aer-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes aer-pulse { 0%,100% { opacity: 0.55; } 50% { opacity: 1; } }
+@keyframes aer-sheen { 0% { background-position: -120% 0; } 100% { background-position: 220% 0; } }
+
+/* thin scrollbar on dark — scoped */
+.aerarium-landing * { scrollbar-width: thin; scrollbar-color: var(--stone-line-2) transparent; }
+
+@media (max-width: 760px) {
+  .aerarium-landing .aer-hide-sm { display: none !important; }
+}

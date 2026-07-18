@@ -1,0 +1,27 @@
+[package]
+name = "alt-registry"
+version = "0.1.0"
+edition = "2021"
+description = "ALT pointer registry — deterministic PDA mapping (authority, comet) -> Address Lookup Table address for the Solana-native Compound lane"
+license = "BSD-3-Clause"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "alt_registry"
+
+[features]
+default = []
+no-entrypoint = []
+
+[dependencies]
+solana-program = "=3.0.0"
+solana-system-interface = { version = "=2.0.0", features = ["bincode"] }
+borsh = { version = "1.5", features = ["derive"] }
+
+[dev-dependencies]
+solana-program-test = "=3.1.5"
+solana-sdk = "=3.0.0"
+tokio = { version = "1", features = ["full"] }
+
+# Standalone crate — not part of any parent workspace.
+[workspace]

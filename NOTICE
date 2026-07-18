@@ -1,0 +1,24 @@
+aerarium
+Copyright 2026 Rome Protocol
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+-------------------------------------------------------------------------------
+Relationship to Compound III (Comet)
+-------------------------------------------------------------------------------
+aerarium is a user interface. It interacts with a deployed Compound III (Comet)
+money market via that contract's ABI and calldata; it does NOT contain, fork, or
+redistribute Compound contract source.
+
+The Comet contracts are maintained as a separate repository:
+
+    https://github.com/rome-protocol/compound-on-rome-comet
+
+which is licensed under the Business Source License 1.1 (BUSL-1.1). Use of those
+contracts is governed by that license and its Additional Use Grant — not by this
+repository's Apache-2.0 license.
+
+-------------------------------------------------------------------------------
+Third-party fonts
+-------------------------------------------------------------------------------
+This product bundles IBM Plex Mono, licensed under the SIL Open Font License 1.1.

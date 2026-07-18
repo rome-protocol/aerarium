@@ -1,0 +1,32 @@
+[package]
+name = "native-faucet"
+version = "0.1.0"
+edition = "2021"
+description = "Self-serve SPL test-token faucet — one batched instruction drops a fixed amount of N mints straight into the caller's own wallet ATA. Native (non-Anchor) solana-program crate, mirrors alt-registry."
+license = "BSD-3-Clause"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "native_faucet"
+
+[features]
+default = []
+no-entrypoint = []
+
+[dependencies]
+# Pinned to match programs/alt-registry exactly so cargo build-sbf resolves the
+# same way. spl-token 9.0.0 + spl-associated-token-account 8.0.0 both build on
+# the granular solana-* 3.x crates that solana-program 3.0.0 re-exports, so the
+# Pubkey / Instruction / AccountInfo types unify across the whole CPI surface.
+solana-program = "=3.0.0"
+solana-system-interface = "=2.0.0"
+spl-token = { version = "=9.0.0", features = ["no-entrypoint"] }
+spl-associated-token-account = { version = "=8.0.0", features = ["no-entrypoint"] }
+
+[dev-dependencies]
+solana-program-test = "=3.1.5"
+solana-sdk = "=3.0.0"
+tokio = { version = "1", features = ["full"] }
+
+# Standalone crate — not part of any parent workspace (matches alt-registry).
+[workspace]

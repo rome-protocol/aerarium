@@ -1,0 +1,99 @@
+name: E2E smoke (Hadrian)
+
+# Opt-in workflow that runs the Playwright e2e portal smoke against the
+# live Hadrian testnet.  Each test is a real on-chain transaction — the
+# workflow expects testUser (0x9c9Fd89c8d34a61106b3F9Db41733B02b827c9B5)
+# to be funded with gas + wUSDC.  Its key is the MOCK_WALLET_PRIVATE_KEY
+# repo secret (never committed — see scripts/check-no-committed-secrets.ts).
+#
+# Triggers:
+#  - workflow_dispatch — manually from the Actions tab
+#  - pull_request with label 'run-e2e' — auto on PR when labelled
+#  - daily cron (06:00 UTC) — catches deploy drift, runs off-hours
+#  - repository_dispatch type 'cross-repo-e2e' — fired by registry /
+#    compound-on-rome-comet workflows when changes that could affect
+#    the demo land on those repos' main branches.  See:
+#      registry/.github/workflows/dispatch-demo-e2e.yml
+#      compound-on-rome-comet/.github/workflows/dispatch-demo-e2e.yml
+#
+# NOT on every PR by default — tests cost real testnet gas AND can flake
+# when Hadrian is being redeployed.  Local devs run `npm run test:e2e`.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [labeled, synchronize]
+    branches: [main]
+  schedule:
+    - cron: '0 6 * * *'
+  repository_dispatch:
+    types: [cross-repo-e2e]
+
+jobs:
+  e2e:
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'schedule' ||
+      github.event_name == 'repository_dispatch' ||
+      (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'run-e2e'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Log dispatch origin
+        if: github.event_name == 'repository_dispatch'
+        env:
+          SOURCE_REPO: ${{ github.event.client_payload.source_repo }}
+          SOURCE_PR: ${{ github.event.client_payload.source_pr }}
+          SOURCE_SHA: ${{ github.event.client_payload.source_sha }}
+        run: |
+          echo "Dispatched by $SOURCE_REPO PR #$SOURCE_PR ($SOURCE_SHA)"
+
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install deps
+        run: npm ci --legacy-peer-deps
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium --with-deps
+
+      - name: Run e2e
+        run: npm run test:e2e
+        env:
+          # Mock-wallet for headless connect.  Throwaway devnet test wallet —
+          # key comes from the repo secret, never a committed literal.
+          NEXT_PUBLIC_MOCK_WALLET: '1'
+          NEXT_PUBLIC_MOCK_WALLET_ADDRESS: '0x9c9Fd89c8d34a61106b3F9Db41733B02b827c9B5'
+          NEXT_PUBLIC_MOCK_WALLET_PRIVATE_KEY: ${{ secrets.MOCK_WALLET_PRIVATE_KEY }}
+
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+      - name: Post result back to dispatching PR
+        if: always() && github.event_name == 'repository_dispatch' && github.event.client_payload.source_repo != '' && github.event.client_payload.source_pr_number != ''
+        env:
+          SOURCE_REPO: ${{ github.event.client_payload.source_repo }}
+          SOURCE_PR: ${{ github.event.client_payload.source_pr_number }}
+          SOURCE_SHA: ${{ github.event.client_payload.source_sha }}
+          OUTCOME: ${{ job.status }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          GH_TOKEN: ${{ secrets.CROSS_REPO_DISPATCH_TOKEN }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "no CROSS_REPO_DISPATCH_TOKEN secret — skipping back-comment"
+            exit 0
+          fi
+          STATUS_ICON="❌"
+          if [ "$OUTCOME" = "success" ]; then STATUS_ICON="✅"; fi
+          BODY="$STATUS_ICON cross-repo e2e on \`aerarium\`: **$OUTCOME** ([run]($RUN_URL))"
+          gh api "/repos/$SOURCE_REPO/issues/$SOURCE_PR/comments" \
+            -f body="$BODY" \
+            -H "Accept: application/vnd.github+json" || true

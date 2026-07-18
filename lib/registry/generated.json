@@ -1,0 +1,237 @@
+{
+  "121214": {
+    "chainId": 121214,
+    "chainSlug": "martius",
+    "displayName": "Rome Martius",
+    "network": "testnet",
+    "rpcUrl": "https://martius.testnet.romeprotocol.xyz/",
+    "explorerUrl": "https://via-martius.testnet.romeprotocol.xyz/",
+    "baseAsset": {
+      "address": "0x2fffdfa11a9cef9210dc34e975649f09119c4efb",
+      "displaySymbol": "wUSDC",
+      "underlyingMint": "3b442cb3912157f13a933d0134282d032b5ffecd01a2dbf1b7790608df002ea7"
+    },
+    "comets": {
+      "multicollat": {
+        "label": "multicollat",
+        "address": "0x2fD2C964342f2332b80D27d4eAbE0E0c4A22a43d",
+        "collateralAssets": [
+          "0x03183ee90388c9553fe9c7b019a32ce133b8e58e",
+          "0xa4dbecdcc812b9c933967a15fe5d9af420084b2b",
+          "0x34ae37cfa1f41f5e69d8f042f7455a63a4f048b8",
+          "0x8a27e495cead6ecbbe25b537dbf666fd6bfe01e3",
+          "0xe6fd55a93caecf0f9cf60fbc4d2cbe0d71b54491",
+          "0x71dc1c088e17ccd67058c626a358e02f6ebaac69",
+          "0xcb1e4cd61704c9fcc196ce98619e85a241383fd8",
+          "0x2c71373725c59b3f1d47a0d425b7050d02e014b4"
+        ]
+      }
+    },
+    "primaryComet": "multicollat",
+    "bulker": "0x5a3F351E6FB57BeA3FEF4B85fF2be214985793A1",
+    "collateralAssets": {
+      "wETH": {
+        "symbol": "wETH",
+        "address": "0x03183ee90388c9553fe9c7b019a32ce133b8e58e",
+        "decimals": 8
+      },
+      "wSOL": {
+        "symbol": "wSOL",
+        "address": "0xa4dbecdcc812b9c933967a15fe5d9af420084b2b",
+        "decimals": 9
+      },
+      "wBTC": {
+        "symbol": "wBTC",
+        "address": "0x34ae37cfa1f41f5e69d8f042f7455a63a4f048b8",
+        "decimals": 9
+      },
+      "wJitoSOL": {
+        "symbol": "wJitoSOL",
+        "address": "0x8a27e495cead6ecbbe25b537dbf666fd6bfe01e3",
+        "decimals": 9
+      },
+      "wmSOL": {
+        "symbol": "wmSOL",
+        "address": "0xe6fd55a93caecf0f9cf60fbc4d2cbe0d71b54491",
+        "decimals": 9
+      },
+      "wJUP": {
+        "symbol": "wJUP",
+        "address": "0x71dc1c088e17ccd67058c626a358e02f6ebaac69",
+        "decimals": 9
+      },
+      "wJTO": {
+        "symbol": "wJTO",
+        "address": "0xcb1e4cd61704c9fcc196ce98619e85a241383fd8",
+        "decimals": 9
+      },
+      "wBONK": {
+        "symbol": "wBONK",
+        "address": "0x2c71373725c59b3f1d47a0d425b7050d02e014b4",
+        "decimals": 9
+      }
+    },
+    "ux": {
+      "singleTxFlows": [
+        "supply",
+        "supplyTo",
+        "withdraw",
+        "withdrawTo",
+        "borrow",
+        "transferAsset",
+        "allow",
+        "supplyCollatBorrowBase",
+        "twoCollatSupply"
+      ],
+      "bundleFlows": [],
+      "fallbackFlows": [
+        "sequentialNTx"
+      ]
+    },
+    "jitoEnabled": false,
+    "persistentAlts": [],
+    "romeEvmProgramId": "RomeTaTNPJNBxtB3Wong9geVTtkEFJfUqgktQVq3iSX",
+    "solanaCluster": "devnet",
+    "multicall3": "0x549afb8019a29ece3ba3b3d9c13208c441a309ea"
+  },
+  "200010": {
+    "chainId": 200010,
+    "chainSlug": "hadrian",
+    "displayName": "Rome Hadrian",
+    "network": "devnet",
+    "rpcUrl": "https://hadrian.testnet.romeprotocol.xyz/",
+    "explorerUrl": "https://via-hadrian.testnet.romeprotocol.xyz/",
+    "baseAsset": {
+      "address": "0xd4cc34b67c805d472b5a709a22a1037f6b16ef28",
+      "displaySymbol": "wUSDC",
+      "underlyingMint": "3b442cb3912157f13a933d0134282d032b5ffecd01a2dbf1b7790608df002ea7"
+    },
+    "comets": {
+      "canonical": {
+        "label": "canonical",
+        "address": "0xfc322489D4089AdCC79074C8058Fd257c63622D8",
+        "collateralAssets": [
+          "0x8c2c1486cadf7d07312908a065f14af65f56be7e",
+          "0x1dece035621c65a90349b56a801068b439fa4201",
+          "0xd3200df5e6f5e37fdba0275bb63dca1b22506760",
+          "0x1ae3f6327a919c33ebb7590df3d14e3f222f2b04",
+          "0x872b857058bfb8bf30720b3aa6a0816b76abb271",
+          "0x1b3f2b2d67d5ac13bc9c3121eedf15e968e5609a",
+          "0xcca3f9df5e9f60bb7485606260e3816ebcafbf7f",
+          "0xae4309c91925e1710d725234aa8797631dc3d88a"
+        ]
+      }
+    },
+    "primaryComet": "canonical",
+    "bulker": "0x18A2DbfeD0d1f1094289E56e333A14c12C47E73b",
+    "collateralAssets": {
+      "wETH": {
+        "symbol": "wETH",
+        "address": "0x8c2c1486cadf7d07312908a065f14af65f56be7e",
+        "decimals": 8
+      },
+      "wSOL": {
+        "symbol": "wSOL",
+        "address": "0x1dece035621c65a90349b56a801068b439fa4201",
+        "decimals": 9
+      },
+      "wBTC": {
+        "symbol": "wBTC",
+        "address": "0xd3200df5e6f5e37fdba0275bb63dca1b22506760",
+        "decimals": 9
+      },
+      "wJitoSOL": {
+        "symbol": "wJitoSOL",
+        "address": "0x1ae3f6327a919c33ebb7590df3d14e3f222f2b04",
+        "decimals": 9
+      },
+      "wmSOL": {
+        "symbol": "wmSOL",
+        "address": "0x872b857058bfb8bf30720b3aa6a0816b76abb271",
+        "decimals": 9
+      },
+      "wJUP": {
+        "symbol": "wJUP",
+        "address": "0x1b3f2b2d67d5ac13bc9c3121eedf15e968e5609a",
+        "decimals": 9
+      },
+      "wJTO": {
+        "symbol": "wJTO",
+        "address": "0xcca3f9df5e9f60bb7485606260e3816ebcafbf7f",
+        "decimals": 9
+      },
+      "wBONK": {
+        "symbol": "wBONK",
+        "address": "0xae4309c91925e1710d725234aa8797631dc3d88a",
+        "decimals": 9
+      }
+    },
+    "ux": {
+      "singleTxFlows": [
+        "supply",
+        "supplyTo",
+        "withdraw",
+        "withdrawTo",
+        "borrow",
+        "transferAsset",
+        "allow",
+        "supplyCollatBorrowBase",
+        "twoCollatSupply"
+      ],
+      "bundleFlows": [],
+      "fallbackFlows": [
+        "sequentialNTx"
+      ]
+    },
+    "jitoEnabled": false,
+    "persistentAlts": [
+      "458nSqg6qzcsgYr1DiDrs59UBJD8VRsvpiiHP7rQ3MVk",
+      "9DswaXsjcqozpbUUnL24wRqteqZTZH1UqCpFcsYWcgQP"
+    ],
+    "romeEvmProgramId": "RPTWwELXAY4KC9ZPHhaxp7Sq1hHtU3HNEgLbSegCcWf",
+    "solanaCluster": "devnet",
+    "multicall3": "0xb7180d3c46632b582b99d9af3daae394fab9ae4c",
+    "faucet": {
+      "address": "0xA24CB9b443F46aE205586Cd3dDF0447A9f295019",
+      "gasDropWei": "0",
+      "tokens": [
+        {
+          "symbol": "wBTC",
+          "address": "0xd3200df5e6f5e37fdba0275bb63dca1b22506760",
+          "decimals": 9,
+          "dropAmountWei": "1000000000"
+        },
+        {
+          "symbol": "wJitoSOL",
+          "address": "0x1ae3f6327a919c33ebb7590df3d14e3f222f2b04",
+          "decimals": 9,
+          "dropAmountWei": "1000000000"
+        },
+        {
+          "symbol": "wmSOL",
+          "address": "0x872b857058bfb8bf30720b3aa6a0816b76abb271",
+          "decimals": 9,
+          "dropAmountWei": "1000000000"
+        },
+        {
+          "symbol": "wJUP",
+          "address": "0x1b3f2b2d67d5ac13bc9c3121eedf15e968e5609a",
+          "decimals": 9,
+          "dropAmountWei": "1000000000"
+        },
+        {
+          "symbol": "wJTO",
+          "address": "0xcca3f9df5e9f60bb7485606260e3816ebcafbf7f",
+          "decimals": 9,
+          "dropAmountWei": "1000000000"
+        },
+        {
+          "symbol": "wBONK",
+          "address": "0xae4309c91925e1710d725234aa8797631dc3d88a",
+          "decimals": 9,
+          "dropAmountWei": "1000000000"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,20 @@
+node_modules
+.next
+.env
+.env.local
+*.log
+out
+build
+.DS_Store
+.vercel
+tsconfig.tsbuildinfo
+next-env.d.ts
+.playwright-cli/
+.superpowers/
+
+# Design source reference — fonts duplicate public/fonts (already tracked)
+design/fonts/
+
+# Playwright e2e
+/playwright-report/
+/test-results/
