@@ -6,16 +6,13 @@ shared on-chain state, across **any** Rome chain. This doc captures the patterns
 as patterns — Aerarium on Hadrian is just the worked example. The runnable
 tooling below is chain-agnostic: point it at your chain and app via config.
 
-> Operating/deploying a concrete instance? See [`DEPLOYMENT.md`](DEPLOYMENT.md)
-> (component inventory, ordered deploy checklist, oracle keeper, runbook).
-
 ---
 
 ## Pattern 1 — Chain-agnostic by config (no hardcoded chain identity)
 
 Nothing chain-specific lives in app code. Chain id, RPC, explorer, contract
 addresses, Multicall3, the rome-evm program id, the Solana cluster, and the
-faucet all resolve **per chain from the [Rome registry](https://github.com/rome-protocol/registry)**
+faucet all resolve **per chain from the [Rome registry](https://github.com/rome-protocol/rome-registry)**
 at build time:
 
 - The build projects `apps/compound/<chainId>-<slug>.json` (+ the chain's
@@ -67,15 +64,13 @@ proxy, RPC, comet, program, and cluster from the same registry config.
 A multi-collateral action reads every collateral price; live CPI reads of N Pyth
 PDAs blow the ~1.4M Solana CU budget, so each asset is priced by a
 `CachedPythAdapter` (a cheap `SLOAD`). An off-chain **oracle-keeper** keeps both
-layers fresh (the Solana PDA *and* the EVM SLOAD cache via `refresh()`). See
-[`DEPLOYMENT.md` §6](DEPLOYMENT.md) for the keeper wiring and failure modes.
+layers fresh (the Solana PDA *and* the EVM SLOAD cache via `refresh()`).
 
 ## Pattern 5 — CU / heap budgeting for atomic flows
 
 Solana-native flows must fit one transaction's CU (~1.4M) and heap (256 KB)
-budget. The method for measuring per-action CU/heap from live traces — and the
-results for supply/withdraw/borrow/repay/absorb — is in
-[`../scripts/flow-budget.md`](../scripts/flow-budget.md). EVM `gasUsed` is **not**
+budget. Measure per-action CU/heap from live traces for
+supply/withdraw/borrow/repay/absorb. EVM `gasUsed` is **not**
 a faithful proxy for Solana CU on Rome — read `computeUnitsConsumed` from the
 Solana tx receipt.
 
@@ -95,9 +90,3 @@ All of these follow the active chain via `NEXT_PUBLIC_DEFAULT_CHAIN_ID` (app) /
 The asset lists for `/discovery` + `/flows` come from `lib/discoveryAssets.ts`
 (`discoveryAssets(cfg)` derives base + every collateral from the chain config) —
 the template for any harness that needs "every asset on this chain."
-
-## Design reference
-
-- [`DEPLOYMENT.md`](DEPLOYMENT.md) — what's deployed + the ordered checklist.
-- Design briefs + the original integration spec live under `docs/` (design
-  scaffolding) — example artifacts for the patterns above.
