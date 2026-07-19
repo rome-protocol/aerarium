@@ -42,3 +42,6 @@ npm run test:e2e    # Playwright smoke
 ## Spec
 
 [Compound on Rome with unified USDC](https://github.com/rome-protocol/compound-on-rome-comet).
+
+## Building on Rome with an agent
+See [`AGENTS.md`](./AGENTS.md) — the Rome-specific rules a coding agent needs.
