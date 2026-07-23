@@ -2,12 +2,31 @@
 
 > **Built on [Rome Protocol](https://docs.rome.builders)** — EVM chains that run natively inside the Solana runtime, where Solidity apps call Solana programs atomically (CPI) and Solana users drive EVM apps: two VMs, one chain, one block.
 
-Aerarium is a Compound v3 lending app on Rome, with two route-isolated lanes over **one shared pool**:
+Aerarium is a Compound v3 lending app on Rome, with two route-isolated lanes over **one shared pool** — live at **[aerarium.devnet.romeprotocol.xyz](https://aerarium.devnet.romeprotocol.xyz)**:
 
 - **`/evm`** — EVM gate (MetaMask / wagmi), standard signed transactions.
 - **`/solana`** — Solana-native gate (Phantom → Rome `DoTxUnsigned`), no Ethereum key; the connected Solana wallet's synthetic EVM address is `msg.sender`.
 
 Both lanes read and write the same Comet, so supply / borrow / liquidate state is identical regardless of which wallet a user brings.
+
+| You can | From `/evm` (MetaMask) | From `/solana` (Phantom) |
+|---|---|---|
+| Supply USDC, earn interest | ✓ | ✓ |
+| Supply collateral (wETH, wSOL) | ✓ | ✓ |
+| Borrow USDC against collateral | ✓ | ✓ |
+| Repay + withdraw | ✓ | ✓ |
+
+```
+MetaMask (EVM key)              Phantom (Solana key — no EVM key)
+      │  signed EVM tx                │  DoTxUnsigned (synthetic sender:
+      │  (submitRomeTx)               │   the wallet's Rome-derived EVM identity)
+      ▼                               ▼
+   ┌─────────────────────────────────────┐
+   │        ONE Comet (Compound v3)      │   one pool, one state,
+   │      on a Rome EVM chain inside     │   both audiences
+   │         the Solana runtime          │
+   └─────────────────────────────────────┘
+```
 
 **Why this works on Rome:**
 - **Single state** — both wallet lanes hit the same on-chain Comet; no bridging, no wrapped-asset fragmentation, no sync delay.
@@ -42,6 +61,22 @@ npm run test:e2e    # Playwright smoke
 ## Spec
 
 [Compound on Rome with unified USDC](https://github.com/rome-protocol/compound-on-rome-comet).
+
+## Repository layout
+
+```
+app/          Next.js routes — /evm (MetaMask lane) and /solana (Phantom lane)
+components/   UI (markets, positions, supply/borrow flows)
+lib/          registry-driven chain config, lanes, oracle + account discovery
+hooks/ store/ data + state
+scripts/      registry config generation, dev tooling
+tests/        vitest unit + guards; Playwright e2e smoke
+docs/         INTEGRATION.md — the reusable patterns behind this app
+```
+
+## License
+
+Apache-2.0 — see [LICENSE](LICENSE). Aerarium is an original UI over Compound III (Comet) deployments; it does not fork BUSL-licensed Compound contracts — see [NOTICE](NOTICE) for provenance and third-party attributions.
 
 ## Building on Rome with an agent
 See [`AGENTS.md`](./AGENTS.md) — the Rome-specific rules a coding agent needs.
