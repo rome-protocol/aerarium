@@ -103,6 +103,21 @@ describe("resolveSolanaRpcTiers", () => {
       PUBLIC_DEVNET_RPC,
     ]);
   });
+
+  // A devnet public fallback on a mainnet deploy would silently answer from
+  // the wrong cluster — the override must replace the last-resort tier.
+  it("SOLANA_RPC_PUBLIC_URL overrides the last-resort tier (mainnet deploys)", () => {
+    const env = { ...ENV, SOLANA_RPC_PUBLIC_URL: "https://api.mainnet-beta.solana.com" };
+    expect(resolveSolanaRpcTiers(env, true, 200010)).toEqual([
+      "https://indexed.rpc",
+      "https://api.mainnet-beta.solana.com",
+    ]);
+    expect(resolveSolanaRpcTiers(env, false, 200010)).toEqual([
+      "https://internal.rpc",
+      "https://indexed.rpc",
+      "https://api.mainnet-beta.solana.com",
+    ]);
+  });
 });
 
 describe("isScanPayload", () => {

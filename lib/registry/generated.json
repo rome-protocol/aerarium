@@ -1,4 +1,122 @@
 {
+  "121212": {
+    "chainId": 121212,
+    "chainSlug": "esquiline",
+    "displayName": "Rome Esquiline",
+    "network": "devnet",
+    "rpcUrl": "https://esquiline.devnet.romeprotocol.xyz/",
+    "explorerUrl": "https://via-esquiline.devnet.romeprotocol.xyz/",
+    "baseAsset": {
+      "address": "0x05663110cB16985b20783c71E788A19624CF3a8d",
+      "displaySymbol": "wUSDC",
+      "underlyingMint": "3b442cb3912157f13a933d0134282d032b5ffecd01a2dbf1b7790608df002ea7"
+    },
+    "comets": {
+      "multicollat": {
+        "label": "multicollat",
+        "address": "0x52df238ef271d019F1Be1dDdd4782f2650DA615A",
+        "collateralAssets": [
+          "0x38e4b1cD7c428e28B7Ca8432C67133Df6d70A55D",
+          "0xD538C2F1dAf407aCEC5EE19dCD217B0B0EF22468"
+        ]
+      }
+    },
+    "primaryComet": "multicollat",
+    "bulker": "0xe1df02fABB0285308576AE99834f488ebF4B2Ad8",
+    "collateralAssets": {
+      "wETH": {
+        "symbol": "wETH",
+        "address": "0x38e4b1cD7c428e28B7Ca8432C67133Df6d70A55D",
+        "decimals": 8
+      },
+      "wSOL": {
+        "symbol": "wSOL",
+        "address": "0xD538C2F1dAf407aCEC5EE19dCD217B0B0EF22468",
+        "decimals": 9
+      }
+    },
+    "ux": {
+      "singleTxFlows": [
+        "supply",
+        "supplyTo",
+        "withdraw",
+        "withdrawTo",
+        "borrow",
+        "transferAsset",
+        "allow",
+        "supplyCollatBorrowBase",
+        "twoCollatSupply"
+      ],
+      "bundleFlows": [],
+      "fallbackFlows": [
+        "sequentialNTx"
+      ]
+    },
+    "jitoEnabled": false,
+    "persistentAlts": [],
+    "romeEvmProgramId": "RomDAfMHwqmjnkpVhya5svp65k6nzR4E1dNxS3fYh79",
+    "solanaCluster": "devnet",
+    "multicall3": "0x73005faad1e31b4cda289acceda512a274925ccf"
+  },
+  "121213": {
+    "chainId": 121213,
+    "chainSlug": "subura",
+    "displayName": "Rome Subura",
+    "network": "devnet",
+    "rpcUrl": "https://subura.devnet.romeprotocol.xyz/",
+    "explorerUrl": "https://via-subura.devnet.romeprotocol.xyz/",
+    "baseAsset": {
+      "address": "0x8ddaa68ad28646a604584d75398c2eed939b6e64",
+      "displaySymbol": "wUSDC",
+      "underlyingMint": "3b442cb3912157f13a933d0134282d032b5ffecd01a2dbf1b7790608df002ea7"
+    },
+    "comets": {
+      "multicollat": {
+        "label": "multicollat",
+        "address": "0xCcEB43DD4600E5B7084bcea82f8fb3723B69a0f3",
+        "collateralAssets": [
+          "0x4c44bc1854b645b00130261f945e3850f8b40cfe",
+          "0x367a5ec03050a1834689128683e4713d0eab4d8a"
+        ]
+      }
+    },
+    "primaryComet": "multicollat",
+    "bulker": "0x471f7df2074afE2dC27d2287DFAacaf8e8F08660",
+    "collateralAssets": {
+      "wETH": {
+        "symbol": "wETH",
+        "address": "0x4c44bc1854b645b00130261f945e3850f8b40cfe",
+        "decimals": 8
+      },
+      "wSOL": {
+        "symbol": "wSOL",
+        "address": "0x367a5ec03050a1834689128683e4713d0eab4d8a",
+        "decimals": 9
+      }
+    },
+    "ux": {
+      "singleTxFlows": [
+        "supply",
+        "supplyTo",
+        "withdraw",
+        "withdrawTo",
+        "borrow",
+        "transferAsset",
+        "allow",
+        "supplyCollatBorrowBase",
+        "twoCollatSupply"
+      ],
+      "bundleFlows": [],
+      "fallbackFlows": [
+        "sequentialNTx"
+      ]
+    },
+    "jitoEnabled": false,
+    "persistentAlts": [],
+    "romeEvmProgramId": "RomDAfMHwqmjnkpVhya5svp65k6nzR4E1dNxS3fYh79",
+    "solanaCluster": "devnet",
+    "multicall3": "0x0104b96c6546338ce30584524203081271efb78e"
+  },
   "121214": {
     "chainId": 121214,
     "chainSlug": "martius",
@@ -89,10 +207,72 @@
       ]
     },
     "jitoEnabled": false,
-    "persistentAlts": [],
+    "persistentAlts": [
+      "9QKTK7CEucrBM4ZnUTzkBA1ZQXmXDouwcib1FQcF5iTp",
+      "226Xv9DvkVJUSn2DJXxNbg1FJkTN54Et8TkbRmL34HSr"
+    ],
     "romeEvmProgramId": "RomeTaTNPJNBxtB3Wong9geVTtkEFJfUqgktQVq3iSX",
     "solanaCluster": "devnet",
     "multicall3": "0x549afb8019a29ece3ba3b3d9c13208c441a309ea"
+  },
+  "121302": {
+    "chainId": 121302,
+    "chainSlug": "trajan",
+    "displayName": "Rome Trajan",
+    "network": "devnet",
+    "rpcUrl": "https://trajan.devnet.romeprotocol.xyz/",
+    "explorerUrl": "https://via-trajan.devnet.romeprotocol.xyz/",
+    "baseAsset": {
+      "address": "0x134c2eedf7da3bf025f52c38b9a072c13357eb45",
+      "displaySymbol": "wUSDC",
+      "underlyingMint": "3b442cb3912157f13a933d0134282d032b5ffecd01a2dbf1b7790608df002ea7"
+    },
+    "comets": {
+      "multicollat": {
+        "label": "multicollat",
+        "address": "0x4AC2682a7368e361449150282924b61EcCdD7420",
+        "collateralAssets": [
+          "0x104736adc00404bfdc4a835f9addd0889d88ff4d",
+          "0xca5aa2a83b0857d4d6c7d1d2df69cc07e4797165"
+        ]
+      }
+    },
+    "primaryComet": "multicollat",
+    "bulker": "0xb5b916742BDDA315Ea2412A002Fd378bA49888E1",
+    "collateralAssets": {
+      "wETH": {
+        "symbol": "wETH",
+        "address": "0x104736adc00404bfdc4a835f9addd0889d88ff4d",
+        "decimals": 8
+      },
+      "wSOL": {
+        "symbol": "wSOL",
+        "address": "0xca5aa2a83b0857d4d6c7d1d2df69cc07e4797165",
+        "decimals": 9
+      }
+    },
+    "ux": {
+      "singleTxFlows": [
+        "supply",
+        "supplyTo",
+        "withdraw",
+        "withdrawTo",
+        "borrow",
+        "transferAsset",
+        "allow",
+        "supplyCollatBorrowBase",
+        "twoCollatSupply"
+      ],
+      "bundleFlows": [],
+      "fallbackFlows": [
+        "sequentialNTx"
+      ]
+    },
+    "jitoEnabled": false,
+    "persistentAlts": [],
+    "romeEvmProgramId": "RPTWwELXAY4KC9ZPHhaxp7Sq1hHtU3HNEgLbSegCcWf",
+    "solanaCluster": "devnet",
+    "multicall3": "0x82cd1dab8aff294264151ee09a4295da0dd60e50"
   },
   "200010": {
     "chainId": 200010,
@@ -233,5 +413,64 @@
         }
       ]
     }
+  },
+  "210000": {
+    "chainId": 210000,
+    "chainSlug": "nerva",
+    "displayName": "Rome Nerva",
+    "network": "testnet",
+    "rpcUrl": "https://nerva.testnet.romeprotocol.xyz/",
+    "explorerUrl": "https://via-nerva.testnet.romeprotocol.xyz/",
+    "baseAsset": {
+      "address": "0xf35dff4b3c297257a5fea475725fbfe71165c48c",
+      "displaySymbol": "wUSDC",
+      "underlyingMint": "3b442cb3912157f13a933d0134282d032b5ffecd01a2dbf1b7790608df002ea7"
+    },
+    "comets": {
+      "multicollat": {
+        "label": "multicollat",
+        "address": "0x12bA37038cA76baf032692df5AC93445e3042026",
+        "collateralAssets": [
+          "0xe955752de836e625113925bbda0a684da2d65c76",
+          "0x4f0489619dad8d82823ed0b7b01d6f6dc74ec352"
+        ]
+      }
+    },
+    "primaryComet": "multicollat",
+    "bulker": "0x5eC1Dd45955318AC1F6592189303e9a017e24164",
+    "collateralAssets": {
+      "wETH": {
+        "symbol": "wETH",
+        "address": "0xe955752de836e625113925bbda0a684da2d65c76",
+        "decimals": 8
+      },
+      "wSOL": {
+        "symbol": "wSOL",
+        "address": "0x4f0489619dad8d82823ed0b7b01d6f6dc74ec352",
+        "decimals": 9
+      }
+    },
+    "ux": {
+      "singleTxFlows": [
+        "supply",
+        "supplyTo",
+        "withdraw",
+        "withdrawTo",
+        "borrow",
+        "transferAsset",
+        "allow",
+        "supplyCollatBorrowBase",
+        "twoCollatSupply"
+      ],
+      "bundleFlows": [],
+      "fallbackFlows": [
+        "sequentialNTx"
+      ]
+    },
+    "jitoEnabled": false,
+    "persistentAlts": [],
+    "romeEvmProgramId": "RomeTaTNPJNBxtB3Wong9geVTtkEFJfUqgktQVq3iSX",
+    "solanaCluster": "devnet",
+    "multicall3": "0xf54bf3adc76e663fd2c868804a7b90ab307dcba8"
   }
 }

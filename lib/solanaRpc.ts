@@ -71,8 +71,13 @@ export function resolveSolanaRpcTiers(
   chainId: number = resolveDefaultChainId(),
 ): string[] {
   const indexed = env.SOLANA_RPC_INDEXED_URL;
+  // Last-resort tier. MUST match the deployment's Solana cluster — a devnet
+  // fallback on a mainnet deploy would silently answer from the wrong chain.
+  // Mainnet deploys set SOLANA_RPC_PUBLIC_URL; devnet/testnet Rome chains
+  // settle on Solana devnet, so the default is correct there.
+  const publicRpc = env.SOLANA_RPC_PUBLIC_URL || PUBLIC_DEVNET_RPC;
   const chain = scan
-    ? [indexed, PUBLIC_DEVNET_RPC]
-    : [resolveSolanaRpcUpstream(env, chainId), indexed, PUBLIC_DEVNET_RPC];
+    ? [indexed, publicRpc]
+    : [resolveSolanaRpcUpstream(env, chainId), indexed, publicRpc];
   return [...new Set(chain.filter((url): url is string => Boolean(url)))];
 }
