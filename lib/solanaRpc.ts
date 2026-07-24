@@ -31,3 +31,48 @@ export function resolveSolanaRpcUpstream(
   if (override) return override;
   return (solanaRpcMap as Record<string, string>)[String(chainId)] || PUBLIC_DEVNET_RPC;
 }
+
+// Wire-level scan methods (the "parsed" variants are web3.js client-side sugar
+// over these). On an UNINDEXED node any of them is a full account-set sweep
+// that keeps running server-side after the client disconnects — stacked sweeps
+// are the 2026-07-24 devnet RPC wedge class.
+const SCAN_METHODS = new Set([
+  "getTokenAccountsByOwner",
+  "getTokenAccountsByDelegate",
+  "getProgramAccounts",
+  "getTokenLargestAccounts",
+  "getLargestAccounts",
+]);
+
+export function isScanPayload(payload: unknown): boolean {
+  const items = Array.isArray(payload) ? payload : [payload];
+  return items.some(
+    (item) =>
+      Boolean(item) &&
+      typeof item === "object" &&
+      SCAN_METHODS.has((item as { method?: unknown }).method as string),
+  );
+}
+
+/**
+ * Method-aware failover tiers for the /api/solana-rpc proxy.
+ *
+ * point reads / tx submit: resolveSolanaRpcUpstream (self-hosted) →
+ *                          SOLANA_RPC_INDEXED_URL → public
+ * scan-class:              SOLANA_RPC_INDEXED_URL → public
+ *
+ * The self-hosted tier is EXCLUDED for scans by design — see SCAN_METHODS.
+ * The public endpoint is indexed too, just rate-limited: an acceptable last
+ * resort, never the primary.
+ */
+export function resolveSolanaRpcTiers(
+  env: Record<string, string | undefined>,
+  scan: boolean,
+  chainId: number = resolveDefaultChainId(),
+): string[] {
+  const indexed = env.SOLANA_RPC_INDEXED_URL;
+  const chain = scan
+    ? [indexed, PUBLIC_DEVNET_RPC]
+    : [resolveSolanaRpcUpstream(env, chainId), indexed, PUBLIC_DEVNET_RPC];
+  return [...new Set(chain.filter((url): url is string => Boolean(url)))];
+}
