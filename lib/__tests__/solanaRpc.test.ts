@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { resolveSolanaRpcUpstream, PUBLIC_DEVNET_RPC } from "@/lib/solanaRpc";
+import {
+  resolveSolanaRpcUpstream,
+  resolveSolanaRpcTiers,
+  isScanPayload,
+  PUBLIC_DEVNET_RPC,
+} from "@/lib/solanaRpc";
 import { resolveDefaultChainId } from "@/lib/config";
 import solanaRpcMap from "@/lib/registry/generated.solana-rpc.json";
 
@@ -57,5 +62,91 @@ describe("resolveSolanaRpcUpstream", () => {
 
   it("treats an empty-string env var as unset (falls through to the map/public)", () => {
     expect(resolveSolanaRpcUpstream({ SOLANA_RPC: "" }, 999999)).toBe(PUBLIC_DEVNET_RPC);
+  });
+});
+
+// Method-aware failover tiers. Scan-class calls (getTokenAccountsByOwner on
+// the flows page) NEVER get the self-hosted tier — on an unindexed node an
+// owner scan is a full token-program sweep that keeps running server-side
+// after client disconnect (the 2026-07-24 devnet RPC wedge class).
+describe("resolveSolanaRpcTiers", () => {
+  const ENV = {
+    SOLANA_RPC: "https://internal.rpc",
+    SOLANA_RPC_INDEXED_URL: "https://indexed.rpc",
+  };
+
+  it("point reads: self-hosted → indexed → public", () => {
+    expect(resolveSolanaRpcTiers(ENV, false, 200010)).toEqual([
+      "https://internal.rpc",
+      "https://indexed.rpc",
+      PUBLIC_DEVNET_RPC,
+    ]);
+  });
+
+  it("scans: indexed → public — self-hosted tier excluded", () => {
+    expect(resolveSolanaRpcTiers(ENV, true, 200010)).toEqual([
+      "https://indexed.rpc",
+      PUBLIC_DEVNET_RPC,
+    ]);
+  });
+
+  it("scans without an indexed endpoint go straight to public (never internal)", () => {
+    expect(resolveSolanaRpcTiers({ SOLANA_RPC: "https://internal.rpc" }, true, 200010)).toEqual([
+      PUBLIC_DEVNET_RPC,
+    ]);
+  });
+
+  it("dedupes tiers when the operator points both vars at the same URL", () => {
+    const env = { SOLANA_RPC: "https://same.rpc", SOLANA_RPC_INDEXED_URL: "https://same.rpc" };
+    expect(resolveSolanaRpcTiers(env, false, 200010)).toEqual([
+      "https://same.rpc",
+      PUBLIC_DEVNET_RPC,
+    ]);
+  });
+
+  // A devnet public fallback on a mainnet deploy would silently answer from
+  // the wrong cluster — the override must replace the last-resort tier.
+  it("SOLANA_RPC_PUBLIC_URL overrides the last-resort tier (mainnet deploys)", () => {
+    const env = { ...ENV, SOLANA_RPC_PUBLIC_URL: "https://api.mainnet-beta.solana.com" };
+    expect(resolveSolanaRpcTiers(env, true, 200010)).toEqual([
+      "https://indexed.rpc",
+      "https://api.mainnet-beta.solana.com",
+    ]);
+    expect(resolveSolanaRpcTiers(env, false, 200010)).toEqual([
+      "https://internal.rpc",
+      "https://indexed.rpc",
+      "https://api.mainnet-beta.solana.com",
+    ]);
+  });
+});
+
+describe("isScanPayload", () => {
+  it("classifies getTokenAccountsByOwner as scan-class", () => {
+    expect(isScanPayload({ jsonrpc: "2.0", id: 1, method: "getTokenAccountsByOwner" })).toBe(true);
+  });
+
+  it("classifies getProgramAccounts as scan-class", () => {
+    expect(isScanPayload({ jsonrpc: "2.0", id: 1, method: "getProgramAccounts" })).toBe(true);
+  });
+
+  it("classifies point reads and tx submission as non-scan", () => {
+    for (const method of ["getAccountInfo", "getMultipleAccounts", "getLatestBlockhash", "sendTransaction", "getSignatureStatuses"]) {
+      expect(isScanPayload({ jsonrpc: "2.0", id: 1, method })).toBe(false);
+    }
+  });
+
+  it("treats a batch as scan-class when ANY entry is a scan", () => {
+    expect(
+      isScanPayload([
+        { jsonrpc: "2.0", id: 1, method: "getAccountInfo" },
+        { jsonrpc: "2.0", id: 2, method: "getTokenAccountsByOwner" },
+      ]),
+    ).toBe(true);
+  });
+
+  it("tolerates malformed payloads as non-scan", () => {
+    expect(isScanPayload(null)).toBe(false);
+    expect(isScanPayload("nonsense")).toBe(false);
+    expect(isScanPayload([{}])).toBe(false);
   });
 });
